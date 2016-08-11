@@ -319,6 +319,14 @@
               { "target": "Name", "source": "identifier", "name": "UserName" }
             ]
           }
+        },
+        "LastUsed": {
+          "resource": {
+            "type": "AccessKeyLastUsed",
+            "identifiers": [
+              { "target": "AccessKeyId", "source": "identifier", "name": "AccessKeyId" }
+            ]
+          }
         }
       }
     },
@@ -368,6 +376,24 @@
             ]
           }
         }
+      }
+    },
+    "AccessKeyLastUsed": {
+      "identifiers": [
+        {
+          "name": "AccessKeyId",
+          "memberName": "AccessKeyId"
+        }
+      ],
+      "shape": "AccessKeyLastUsed",
+      "load": {
+        "request": {
+          "operation": "GetAccessKeyLastUsed",
+          "params": [
+            { "target": "AccessKeyId", "source": "identifier", "name": "AccessKeyId" }
+          ]
+        },
+        "path": "AccessKeyLastUsed"
       }
     },
     "AccountPasswordPolicy": {
