@@ -40,6 +40,7 @@
         { "name": "Name" }
       ],
       "shape": "Bucket",
+      "arn": "arn:{partition}:{service}:::{name}",
       "actions": {
         "Create": {
           "request": {
@@ -783,6 +784,7 @@
         { "name": "Key" }
       ],
       "shape": "HeadObjectOutput",
+      "arn": "arn:{partition}:{service}:::{bucket_name}/{key}",
       "load": {
         "request": {
           "operation": "HeadObject",
@@ -969,6 +971,7 @@
         { "name": "Key" }
       ],
       "shape": "Object",
+      "arn": "arn:{partition}:{service}:::{bucket_name}/{key}",
       "actions": {
         "CopyFrom": {
           "request": {
