@@ -79,11 +79,23 @@ class Session(object):
             self._session.get_component('event_emitter'))
         self._setup_loader()
         self._register_default_handlers()
+        self._account_id = None
 
     def __repr__(self):
         return '{0}(region_name={1})'.format(
             self.__class__.__name__,
             repr(self._session.get_config_variable('region')))
+
+    @property
+    def account_id(self):
+        """
+        The **read-only** account id.
+        """
+        if not self._account_id:
+            # TODO: Error handling
+            account_id = self.client('sts').get_caller_identity()['Account']
+            self._account_id = account_id
+        return self._account_id
 
     @property
     def profile_name(self):

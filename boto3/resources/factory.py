@@ -13,6 +13,7 @@
 
 import logging
 from functools import partial
+from string import Formatter
 
 from .action import ServiceAction
 from .action import WaiterAction
@@ -127,10 +128,7 @@ class ResourceFactory(object):
         )
 
         # Amazon Resource Name
-        self._load_arn(
-            attrs=attrs, meta=meta, resource_name=resource_name,
-            resource_model=resource_model
-        )
+        self._load_arn(attrs=attrs, meta=meta, resource_model=resource_model)
 
         # Create the name based on the requested service and resource
         cls_name = resource_name
@@ -146,9 +144,36 @@ class ResourceFactory(object):
                 service_context=service_context)
         return type(str(cls_name), tuple(base_classes), attrs)
 
-    def _load_arn(self, attrs, meta, resource_model, resource_name):
-        print(service_context.session.client('sts').get_caller_identity())
-        pass
+    def _load_arn(self, attrs, meta, resource_model):
+        format_string = resource_model._definition.get('arn', '')
+
+        # Only define an arn if the resource has a defined arn format
+        if  not format_string:
+            def get_arn(self):
+                formatter = Formatter()
+                mapping = {}
+                keys = set([k[1] for k in formatter.parse(format_string) if k[1]])
+
+                if 'partition' in keys:
+                    keys.remove('partition')
+                    mapping['partition'] = 'aws' # TODO partition mappings, possible using region
+                if 'service' in keys:
+                    keys.remove('service')
+                    mapping['service'] = meta.service_name
+                if 'region' in keys:
+                    keys.remove('region')
+                    mapping['region'] = meta.session.region_name
+                if 'account-id' in keys:
+                    keys.remove('account-id')
+                    mapping['account-id'] = meta.session.account_id
+
+                for key in keys:
+                    mapping[key] = getattr(self, key) # TODO error handling
+                return format_string.format(**mapping)
+
+            # Rename arn if an attribute already exists
+            key = '_arn' if 'arn' in attrs else 'arn'
+            attrs[key] = property(get_arn)
 
     def _load_identifiers(self, attrs, meta, resource_model, resource_name):
         """
