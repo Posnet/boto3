@@ -145,10 +145,10 @@ class ResourceFactory(object):
         return type(str(cls_name), tuple(base_classes), attrs)
 
     def _load_arn(self, attrs, meta, resource_model):
-        format_string = resource_model._definition.get('arn', '')
+        format_string = resource_model._definition.get('arn', False)
 
         # Only define an arn if the resource has a defined arn format
-        if  not format_string:
+        if format_string:
             def get_arn(self):
                 formatter = Formatter()
                 mapping = {}

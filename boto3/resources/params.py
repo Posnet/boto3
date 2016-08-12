@@ -89,6 +89,9 @@ def create_request_parameters(parent, request_model, params=None, index=None):
         elif source == 'input':
             # This is provided by the user, so ignore it here
             continue
+        elif source == 'arn':
+            value = parent.arn
+            print(value)
         else:
             raise NotImplementedError(
                 'Unsupported source type: {0}'.format(source))
