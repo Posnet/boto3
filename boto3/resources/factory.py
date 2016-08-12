@@ -81,7 +81,9 @@ class ResourceFactory(object):
 
         # Set some basic info
         meta = ResourceMeta(
-            service_context.service_name, resource_model=resource_model)
+            service_context.service_name, resource_model=resource_model,
+            session=service_context.session
+        )
         attrs = {
             'meta': meta,
         }
@@ -124,6 +126,12 @@ class ResourceFactory(object):
             resource_model=resource_model, service_context=service_context
         )
 
+        # Amazon Resource Name
+        self._load_arn(
+            attrs=attrs, meta=meta, resource_name=resource_name,
+            resource_model=resource_model
+        )
+
         # Create the name based on the requested service and resource
         cls_name = resource_name
         if service_context.service_name == resource_name:
@@ -137,6 +145,10 @@ class ResourceFactory(object):
                 class_attributes=attrs, base_classes=base_classes,
                 service_context=service_context)
         return type(str(cls_name), tuple(base_classes), attrs)
+
+    def _load_arn(self, attrs, meta, resource_model, resource_name):
+        print(service_context.session.client('sts').get_caller_identity())
+        pass
 
     def _load_identifiers(self, attrs, meta, resource_model, resource_name):
         """
