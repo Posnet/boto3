@@ -12,6 +12,7 @@
 # language governing permissions and limitations under the License.
 
 import logging
+import jmespath
 from functools import partial
 from string import Formatter
 
@@ -147,12 +148,21 @@ class ResourceFactory(object):
     def _load_arn(self, attrs, meta, resource_model):
         format_string = resource_model._definition.get('arn', False)
 
+        # TODO path = False # TODO: make more clean
+        # if format_string and type(format_string) != str:
+        #     path = format_string.get('path', False)
+        #     format_string = ''
+        #     if not path:
+        #         raise(NotImplementedError) # TODO: Error handling
+
+
         # Only define an arn if the resource has a defined arn format
         if format_string:
             def get_arn(self):
                 formatter = Formatter()
                 mapping = {}
                 keys = set([k[1] for k in formatter.parse(format_string) if k[1]])
+                print(keys)
 
                 if 'partition' in keys:
                     keys.remove('partition')
@@ -174,6 +184,13 @@ class ResourceFactory(object):
             # Rename arn if an attribute already exists
             key = '_arn' if 'arn' in attrs else 'arn'
             attrs[key] = property(get_arn)
+
+        # TODO elif path:
+        #     x = meta.data
+        #     if not meta.data: return
+        #     for key in path:
+        #         x = meta.data[key]
+        #     return x
 
     def _load_identifiers(self, attrs, meta, resource_model, resource_name):
         """

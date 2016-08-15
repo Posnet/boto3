@@ -73,6 +73,7 @@
                 }
             ],
             "shape": "MetricAlarm",
+            "arn": "{alarm_arn}",
             "load": {
                 "request": {
                     "operation": "DescribeAlarms",

@@ -313,6 +313,7 @@
         }
       ],
       "shape": "DescribeVaultOutput",
+      "arn": "{vault_arn}",
       "load": {
         "request": {
           "operation": "DescribeVault",
