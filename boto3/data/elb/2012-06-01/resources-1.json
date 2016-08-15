@@ -62,10 +62,6 @@
               "target": "Key",
               "source": "response",
               "path": "TagDescriptions[].Tags[].Key"
-            }, {
-              "target": "LoadBalancerName",
-              "source": "identifier",
-              "name": "Name"
             }],
             "path": "TagDescriptions[].Tags[]"
           }
@@ -76,8 +72,6 @@
       "shape": "Tag",
       "identifiers": [{
         "name": "Key"
-      }, {
-        "name": "LoadBalancerName"
       }]
     }
   }
