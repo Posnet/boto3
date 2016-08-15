@@ -49,6 +49,7 @@
         }
       ],
       "shape": "TableDescription",
+      "arn": "{table_arn}",
       "load": {
         "request": {
           "operation": "DescribeTable",

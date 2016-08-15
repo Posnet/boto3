@@ -50,6 +50,7 @@
         }
       ],
       "shape": "AutoScalingGroup",
+      "arn": "{auto_scaling_group_arn}",
       "load": {
         "request": {
           "operation": "DescribeAutoScalingGroups",
@@ -68,6 +69,7 @@
         }
       ],
       "shape": "LaunchConfiguration",
+      "arn": "{launch_configuration_arn}",
       "load": {
         "request": {
           "operation": "DescribeLaunchConfigurations",

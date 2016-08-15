@@ -60,6 +60,7 @@
         }
       ],
       "shape": "Stack",
+      "arn": "{stack_id}",
       "load": {
         "request": {
           "operation": "DescribeStacks",
