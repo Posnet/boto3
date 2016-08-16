@@ -146,51 +146,63 @@ class ResourceFactory(object):
         return type(str(cls_name), tuple(base_classes), attrs)
 
     def _load_arn(self, attrs, meta, resource_model):
-        format_string = resource_model._definition.get('arn', False)
-
-        # TODO path = False # TODO: make more clean
-        # if format_string and type(format_string) != str:
-        #     path = format_string.get('path', False)
-        #     format_string = ''
-        #     if not path:
-        #         raise(NotImplementedError) # TODO: Error handling
-
+        arn_config = resource_model._definition.get('arn', False)
 
         # Only define an arn if the resource has a defined arn format
-        if format_string:
-            def get_arn(self):
-                formatter = Formatter()
-                mapping = {}
-                keys = set([k[1] for k in formatter.parse(format_string) if k[1]])
-                print(keys)
+        if arn_config:
+            arn_property = None
+            format_string = arn_config.get('formatString', False)
+            data_path = arn_config.get('dataPath', False)
 
-                if 'partition' in keys:
-                    keys.remove('partition')
-                    mapping['partition'] = 'aws' # TODO partition mappings, possible using region
-                if 'service' in keys:
-                    keys.remove('service')
-                    mapping['service'] = meta.service_name
-                if 'region' in keys:
-                    keys.remove('region')
-                    mapping['region'] = meta.session.region_name
-                if 'account-id' in keys:
-                    keys.remove('account-id')
-                    mapping['account-id'] = meta.session.account_id
+            print(format_string, data_path)
+            if format_string:
+                def construct_arn(self):
+                    formatter = Formatter()
+                    mapping = {}
+                    keys = set([k[1] for k in formatter.parse(format_string) if k[1]])
+                    print(keys)
 
-                for key in keys:
-                    mapping[key] = getattr(self, key) # TODO error handling
-                return format_string.format(**mapping)
+                    if 'partition' in keys:
+                        keys.remove('partition')
+                        mapping['partition'] = 'aws' # TODO partition mappings, possible using region
+                    if 'service' in keys:
+                        keys.remove('service')
+                        mapping['service'] = meta.service_name
+                    if 'region' in keys:
+                        keys.remove('region')
+                        mapping['region'] = meta.session.region_name
+                    if 'account-id' in keys:
+                        keys.remove('account-id')
+                        mapping['account-id'] = meta.session.account_id
+
+                    # Currently supports account of only top level properties
+                    for key in keys:
+                        mapping[key] = getattr(self, key) # TODO error handling
+                    return format_string.format(**mapping)
+
+                arn_property = property(construct_arn)
+            elif data_path:
+                def arn_path_loader(self):
+                    if self.meta.data is None:
+                        if hasattr(self, 'load'):
+                            self.load()
+                        else:
+                            raise ResourceLoadException(
+                                '{0} has no load method'.format(
+                                    self.__class__.__name__))
+
+                    data = self.meta.data
+                    for key in data_path:
+                        data = data[key] # TODO: Error handling
+                    return data
+                arn_property = property(arn_path_loader)
+
+            if not(arn_property):
+                raise(NotImplementedError)
 
             # Rename arn if an attribute already exists
             key = '_arn' if 'arn' in attrs else 'arn'
-            attrs[key] = property(get_arn)
-
-        # TODO elif path:
-        #     x = meta.data
-        #     if not meta.data: return
-        #     for key in path:
-        #         x = meta.data[key]
-        #     return x
+            attrs[key] = arn_property
 
     def _load_identifiers(self, attrs, meta, resource_model, resource_name):
         """
