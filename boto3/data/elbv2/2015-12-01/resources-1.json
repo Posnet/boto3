@@ -35,7 +35,9 @@
         "memberName": "LoadBalancerName"
       }],
       "shape": "LoadBalancer",
-      "arn": "{load_balancer_arn}",
+      "arn": {
+        "dataPath": ["LoadBalacerArn"]
+      },
       "load": {
         "request": {
           "operation": "DescribeLoadBalancers",

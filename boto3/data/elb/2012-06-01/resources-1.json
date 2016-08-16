@@ -35,7 +35,9 @@
         "memberName": "LoadBalancerName"
       }],
       "shape": "LoadBalancerDescription",
-      "arn": "arn:{partition}:elasticloadbalancing:{region}:{account-id}:loadbalancer/{name}",
+      "arn":{
+        "formatString": "arn:{partition}:elasticloadbalancing:{region}:{account-id}:loadbalancer/{name}"
+      },
       "load": {
         "request": {
           "operation": "DescribeLoadBalancers",

@@ -49,7 +49,9 @@
         }
       ],
       "shape": "TableDescription",
-      "arn": "{table_arn}",
+      "arn": {
+        "dataPath": ["TableArn"]
+      },
       "load": {
         "request": {
           "operation": "DescribeTable",
