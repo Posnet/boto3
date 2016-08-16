@@ -40,7 +40,9 @@
         { "name": "Name" }
       ],
       "shape": "Bucket",
-      "arn": "arn:{partition}:{service}:::{name}",
+      "arn":  {
+        "formatString": "arn:{partition}:{service}:::{name}"
+      },
       "actions": {
         "Create": {
           "request": {
@@ -971,7 +973,9 @@
         { "name": "Key" }
       ],
       "shape": "Object",
-      "arn": "arn:{partition}:{service}:::{bucket_name}/{key}",
+      "arn": {
+        "formatString": "arn:{partition}:{service}:::{bucket_name}/{key}"
+      },
       "actions": {
         "CopyFrom": {
           "request": {

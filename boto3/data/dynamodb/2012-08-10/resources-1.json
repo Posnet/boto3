@@ -43,12 +43,15 @@
   "resources": {
     "Table": {
       "identifiers": [
-        { 
+        {
           "name": "Name",
           "memberName": "TableName"
         }
       ],
       "shape": "TableDescription",
+      "arn": {
+        "dataPath": ["TableArn"]
+      },
       "load": {
         "request": {
           "operation": "DescribeTable",

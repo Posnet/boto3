@@ -73,6 +73,9 @@
                 }
             ],
             "shape": "MetricAlarm",
+            "arn": {
+              "dataPath": ["AlarmArn"]
+            },
             "load": {
                 "request": {
                     "operation": "DescribeAlarms",

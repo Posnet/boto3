@@ -100,6 +100,9 @@
         { "name": "Url" }
       ],
       "shape": "GetQueueAttributesResult",
+      "arn":{
+        "dataPath" : ["Attributes", "QueueArn"]
+      },
       "load": {
         "request": {
           "operation": "GetQueueAttributes",

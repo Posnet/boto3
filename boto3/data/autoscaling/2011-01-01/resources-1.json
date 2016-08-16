@@ -50,6 +50,9 @@
         }
       ],
       "shape": "AutoScalingGroup",
+      "arn": {
+        "dataPath": ["AutoScalingGroupARN"]
+      },
       "load": {
         "request": {
           "operation": "DescribeAutoScalingGroups",
@@ -68,6 +71,9 @@
         }
       ],
       "shape": "LaunchConfiguration",
+      "arn": {
+        "dataPath": ["LaunchConfigurationARN"]
+      },
       "load": {
         "request": {
           "operation": "DescribeLaunchConfigurations",

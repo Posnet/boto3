@@ -313,6 +313,9 @@
         }
       ],
       "shape": "DescribeVaultOutput",
+      "arn": {
+        "dataPath": ["VaultARN"]
+      },
       "load": {
         "request": {
           "operation": "DescribeVault",

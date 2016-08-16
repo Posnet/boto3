@@ -21,9 +21,9 @@
           "identifiers": [{
             "target": "Name",
             "source": "response",
-            "path": "LoadBalancerDescriptions[].LoadBalancerName"
+            "path": "LoadBalancers[].LoadBalancerName"
           }],
-          "path": "LoadBalancerDescriptions[]"
+          "path": "LoadBalancer[]"
         }
       }
     }
@@ -34,28 +34,27 @@
         "name": "Name",
         "memberName": "LoadBalancerName"
       }],
-      "shape": "LoadBalancerDescription",
-      "arn":{
-        "formatString": "arn:{partition}:elasticloadbalancing:{region}:{account-id}:loadbalancer/{name}"
+      "shape": "LoadBalancer",
+      "arn": {
+        "dataPath": ["LoadBalacerArn"]
       },
       "load": {
         "request": {
           "operation": "DescribeLoadBalancers",
           "params": [{
-            "target": "LoadBalancerNames[0]",
+            "target": "Names[0]",
             "source": "identifier",
             "name": "Name"
           }]
         },
-        "path": "LoadBalancerDescriptions[0]"
+        "path": "LoadBalancers[0]"
       },
       "hasMany": {
         "Tags": {
           "request": {
             "params": [{
-              "target": "LoadBalancerNames[0]",
-              "source": "identifier",
-              "name": "Name"
+              "target": "ResourceArns[0]",
+              "source": "arn"
             }],
             "operation": "DescribeTags"
           },

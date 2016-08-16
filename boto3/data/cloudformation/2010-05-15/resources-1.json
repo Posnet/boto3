@@ -60,6 +60,9 @@
         }
       ],
       "shape": "Stack",
+      "arn": {
+        "dataPath": ["StackId"]
+      },
       "load": {
         "request": {
           "operation": "DescribeStacks",

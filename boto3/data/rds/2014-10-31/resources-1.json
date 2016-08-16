@@ -30,7 +30,9 @@
         "memberName": "DBInstanceIdentifier"
       }],
       "shape": "DBInstance",
-      "arn": "arn:{partition}:{service}:{region}:{account-id}:db:{id}",
+      "arn": {
+        "formatString": "arn:{partition}:{service}:{region}:{account-id}:db:{id}"
+      },
       "load": {
         "request": {
           "operation": "DescribeDBInstances",
