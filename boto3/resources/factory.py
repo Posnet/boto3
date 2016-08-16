@@ -154,7 +154,6 @@ class ResourceFactory(object):
             format_string = arn_config.get('formatString', False)
             data_path = arn_config.get('dataPath', False)
 
-            print(format_string, data_path)
             if format_string:
                 def construct_arn(self):
                     formatter = Formatter()
